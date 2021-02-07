@@ -1,0 +1,15 @@
+// ES6 syntax
+
+import React from 'react';
+
+const person = (props) => {
+	// children are elements between the opening and closing tags
+	return (
+		<div>
+			<p>I'm {props.name}, I'm {props.age} years old, and I have {Math.floor(Math.random() * 30)} pets.</p>
+			<p>{props.children}</p>
+		</div>
+	);
+}
+
+export default person;
