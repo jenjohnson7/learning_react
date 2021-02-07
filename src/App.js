@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import './Person/Person.css';
+import './UserInput/UserInput.css';
 import Person from './Person/Person.js';
+import UserOutput from './UserOutput/UserOutput.js';
+import UserInput from './UserInput/UserInput.js';
 
 class App extends Component {
   // state property is only for class-based components (components that extend other components)
@@ -14,6 +17,10 @@ class App extends Component {
 		  {name: 'Julia', age: 25},
 		  {name: 'Charlie', age: 25},
 		  {name: 'Amy', age: 24}
+	  ],
+	  usernames: [
+		  {username: 'jenniferj'},
+		  {username: 'jenjenJen'}
 	  ]
   }
 
@@ -39,6 +46,27 @@ class App extends Component {
 	  );
   }
 
+  usernameEditedHandler = (event) => {
+
+	let first = this.state.usernames[0].username;
+	let second = this.state.usernames[1].username;
+
+	let username_to_change = event.target.getAttribute('username_index');
+
+	if (username_to_change === "0"){
+		first = event.target.value;
+	} else if (username_to_change === '1'){
+		second = event.target.value;
+	}
+
+	this.setState(
+	  {usernames: [
+		  {username: first},
+		  {username: second}
+	  ]}
+	);
+  }
+
   render() {
 
 	// inline css styling: scoped rather than global
@@ -49,6 +77,18 @@ class App extends Component {
 	  padding: '8px',
 	  cursor: 'pointer'
     }
+
+	const usernameBlock = {
+		backgroundColor: '#ccc',
+		opacity: '100%',
+		width: '60%',
+		margin: '16px auto',
+		font: 'inherit',
+		border: '1px solid green',
+		boxShadow: '0 2px 3px #ccc',
+		padding: '16px',
+		textAlign: 'center'
+	}
 
     return (
 	  // JSX
@@ -79,6 +119,22 @@ class App extends Component {
 			name={this.state.persons[2].name}
 			age={this.state.persons[2].age}
 			click={ () => this.switchNameHandler('Julia', 'Charlie', 'Lamy Lorn') }/>
+
+		<div style={usernameBlock}>
+		<UserOutput username={this.state.usernames[0].username} />
+		<UserInput
+			username={this.state.usernames[0].username}
+			changeusernamefunction={this.usernameEditedHandler}
+			username_index='0'/>
+		</div>
+		<div style={usernameBlock}>
+		<UserOutput username={this.state.usernames[1].username} />
+		<UserInput
+			username={this.state.usernames[1].username}
+			changeusernamefunction={this.usernameEditedHandler}
+			username_index='1'/>
+		</div>
+
       </div>
     );
 
