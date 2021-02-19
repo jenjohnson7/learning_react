@@ -21,7 +21,9 @@ class App extends Component {
 	  usernames: [
 		  {username: 'jenniferj'},
 		  {username: 'jenjenJen'}
-	  ]
+	  ],
+	  showJen: false,
+	  showAnna: false
   }
 
   switchNameHandler = (newName, newName2, newName3) => {
@@ -67,6 +69,16 @@ class App extends Component {
 	);
   }
 
+  togglePersonsHandler = (name) => {
+	if (name == "Jen") {
+    	const doesShow = this.state.showJen;
+		this.setState({showJen: !doesShow});
+	} else if (name == "Anna") {
+		const doesShow2 = this.state.showAnna;
+		this.setState({showAnna: !doesShow2});
+	};
+  }
+
   render() {
 
 	// inline css styling: scoped rather than global
@@ -90,6 +102,16 @@ class App extends Component {
 		textAlign: 'center'
 	}
 
+	let AnnaDiv = null;
+
+	if (this.state.showAnna){
+		AnnaDiv = (
+			<div>
+				<Person name="Anna" age='26'/>
+			</div>
+		);
+	}
+
     return (
 	  // JSX
 
@@ -103,8 +125,20 @@ class App extends Component {
 		<p>paragraph is working!</p>
 		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charlie', 'Amy')}>Switch Name</button>
 
-		<Person name="Jen" age='24'>Hobbies: Snowboarding</Person>
-		<Person name="Anna" age='26'/>
+		<button style={style}
+		onClick={this.togglePersonsHandler.bind(this, 'Jen')}>Show/Hide Jen</button>
+
+		{ this.state.showJen === true ?
+			<div>
+				<Person name="Jen" age='24'>Hobbies: Snowboarding</Person>
+
+			</div>
+		: null
+		}
+
+		<button style={style} onClick={this.togglePersonsHandler.bind(this, 'Anna')}>Show/Hide Anna</button>
+
+		{ AnnaDiv }
 
 		<Person
 			name={this.state.persons[0].name}
