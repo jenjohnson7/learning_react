@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import './Person/Person.css';
 import './UserInput/UserInput.css';
+import './CharComponent/CharComponent.css';
 import Person from './Person/Person.js';
 import UserOutput from './UserOutput/UserOutput.js';
 import UserInput from './UserInput/UserInput.js';
+import ValidationComponent from './ValidationComponent/ValidationComponent.js';
+import CharComponent from './CharComponent/CharComponent.js';
 
 class App extends Component {
   // state property is only for class-based components (components that extend other components)
@@ -25,17 +28,19 @@ class App extends Component {
 	  ],
 	  showJen: false,
 	  showAnna: false,
-	  showPersons: false
+	  showPersons: false,
+	  goal_char_count : 4,
+	  typed_string: "",
   }
 
-  switchNameHandler = (newName, newName2, newName3) => {
-	  console.log('clicked');
+  switchNameHandler = (newName, newName2, newName3, newName4) => {
 	  // merges data. Even if no changes to Amy, still need to include her since she will otherwise be detected as deleted from the state, and persons[2] in line 79 will throw an error
 	  this.setState(
 		  {persons: [
-			  {name: newName, age: 25},
-			  {name: newName2, age: 26},
-			  {name: newName3, age: 24}
+			  {name: newName, age: 25, id: 1},
+			  {name: newName2, age: 26, id: 2},
+			  {name: newName3, age: 24, id: 3},
+			  {name: newName4, age: 25, id: 4}
 	  	  ]}
 	  );
   }
@@ -87,18 +92,31 @@ class App extends Component {
   }
 
   togglePersonsHandler = (name) => {
-	if (name == "Jen") {
+	if (name === "Jen") {
     	const doesShow = this.state.showJen;
 		this.setState({showJen: !doesShow});
-	} else if (name == "Anna") {
+	} else if (name === "Anna") {
 		const doesShow2 = this.state.showAnna;
 		this.setState({showAnna: !doesShow2});
-	} else if (name == "everyone"){
+	} else if (name === "everyone"){
 		const doesShow3 = this.state.showPersons;
 		this.setState({showPersons: !doesShow3})
 	};
   }
 
+  typedStringHandler = (event) => {
+	  this.setState({typed_string: event.target.value});
+  }
+
+  deleteCharHandler = (charIndex) => {
+	  console.log("delete char handler");
+	  console.log(charIndex);
+	  const previous_typed_string = this.state.typed_string;
+	  const char_array = previous_typed_string.split('');
+	  char_array.splice(charIndex, 1);
+	  let new_string = char_array.join('');
+	  this.setState({typed_string:new_string});
+  }
   render() {
 
 	// inline css styling: scoped rather than global
@@ -154,6 +172,23 @@ class App extends Component {
 		);
 	}
 
+	let chars = null;
+
+	if (this.state.typed_string){
+		const a = this.state.typed_string.split('');
+		chars = (
+			<div>
+			{a.map((c, index) => {
+				return <CharComponent
+						key={Math.random()}
+						name={c}
+						click={() => this.deleteCharHandler(index)}
+						/>
+			})}
+			</div>
+		)
+	}
+
     return (
 	  // JSX
 
@@ -164,8 +199,7 @@ class App extends Component {
 	 // single line function syntax (line 81) may take longer. In this case, single line => implies 'return' and the switchNameHandler needs parentheses
       <div className="App">
         <h1>Hi, I'm a React app</h1>
-		<p>paragraph is working!</p>
-		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charlie', 'Amy')}>Switch Name</button>
+		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charles PW', 'Lamy Lorn', 'Forte-san')}>Switch Name</button>
 
 		<button style={style}
 		onClick={this.togglePersonsHandler.bind(this, 'Jen')}>Show/Hide Jen</button>
@@ -199,6 +233,15 @@ class App extends Component {
 			username={this.state.usernames[1].username}
 			changeusernamefunction={this.usernameEditedHandler}
 			username_index='1'/>
+		</div>
+
+		<div>
+		<p>Enter a string to be happy:</p>
+		<input type="text" onChange={this.typedStringHandler} value={this.state.typed_string}/>
+		<p>{this.state.typed_string.length} characters</p>
+		<ValidationComponent string_length={this.state.typed_string.length} goal_char_count={this.state.goal_char_count}/>
+
+		{ chars }
 		</div>
 
       </div>
