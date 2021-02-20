@@ -14,16 +14,18 @@ class App extends Component {
   // if props (argument list in functional components) change, the component will also be rerendered
   state = {
 	  persons: [
-		  {name: 'Julia', age: 25},
-		  {name: 'Charlie', age: 25},
-		  {name: 'Amy', age: 24}
+		  {id: 1, name: 'Julia', age: 25},
+		  {id: 2, name: 'Charlie', age: 25},
+		  {id: 3, name: 'Amy', age: 24},
+		  {id: 4, name: 'Noel', age: 25}
 	  ],
 	  usernames: [
 		  {username: 'jenniferj'},
 		  {username: 'jenjenJen'}
 	  ],
 	  showJen: false,
-	  showAnna: false
+	  showAnna: false,
+	  showPersons: false
   }
 
   switchNameHandler = (newName, newName2, newName3) => {
@@ -38,14 +40,29 @@ class App extends Component {
 	  );
   }
 
-  nameChangedHander = (event) => {
-	  this.setState(
-		  {persons: [
-			  {name: 'Julia', age: 25},
-			  {name: event.target.value, age: 25},
-			  {name: 'Amy', age: 24}
-		  ]}
-	  );
+  deletePersonHandler = (personIndex) => {
+	  // use .slice() or spread operator to make copy instead of reference/pointer
+	  // const persons = this.state.persons.slice();
+	  const persons = [...this.state.persons];
+	  persons.splice(personIndex, 1); // this only updates the temporary variable
+	  this.setState({persons:persons});
+	  // therefore, I can set the state persons to the temporary/remove variable persons
+  }
+
+  nameChangedHander = (event, id) => {
+	  const personIndex = this.state.persons.findIndex(p => {
+		  return p.id === id;
+	  });
+
+	  // spread {} for objects
+	  const person = {...this.state.persons[personIndex]};
+	  person.name = event.target.value;
+
+	  // spread [] for arrays
+	  const persons = [...this.state.persons];
+	  persons[personIndex] = person;
+
+	  this.setState({persons: persons});
   }
 
   usernameEditedHandler = (event) => {
@@ -76,6 +93,9 @@ class App extends Component {
 	} else if (name == "Anna") {
 		const doesShow2 = this.state.showAnna;
 		this.setState({showAnna: !doesShow2});
+	} else if (name == "everyone"){
+		const doesShow3 = this.state.showPersons;
+		this.setState({showPersons: !doesShow3})
 	};
   }
 
@@ -112,6 +132,28 @@ class App extends Component {
 		);
 	}
 
+	let persons = null;
+
+	if (this.state.showPersons){
+		// rendering each object in a list dynamically
+		// 'map' converts each elt in array to something else using a function
+		// use index feature of 'map' and pass it to the handler to distinguish which person to remove
+		// use key = unique identifier to increase efficiency of rerendering
+		persons = (
+			<div>
+			{this.state.persons.map((person, index) => {
+				return <Person
+					click={() => this.deletePersonHandler(index)}
+					name={person.name}
+					age={person.age}
+					key={person.id}
+					changed={(event) => this.nameChangedHander(event, person.id)}
+				/>
+			})}
+			</div>
+		);
+	}
+
     return (
 	  // JSX
 
@@ -140,19 +182,9 @@ class App extends Component {
 
 		{ AnnaDiv }
 
-		<Person
-			name={this.state.persons[0].name}
-			age={this.state.persons[0].age}
-			click={this.switchNameHandler.bind(this, 'Judge Jusi', 'Charlie', 'Amy')}>Hobbies: Knitting</Person>
-		<Person
-			name={this.state.persons[1].name}
-			age={this.state.persons[1].age}
-			click={this.switchNameHandler.bind(this, 'Julia', 'Charles PW', 'Amy')}
-			changed={this.nameChangedHander}/>
-		<Person
-			name={this.state.persons[2].name}
-			age={this.state.persons[2].age}
-			click={ () => this.switchNameHandler('Julia', 'Charlie', 'Lamy Lorn') }/>
+		<button style={style} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+
+		{ persons }
 
 		<div style={usernameBlock}>
 		<UserOutput username={this.state.usernames[0].username} />
