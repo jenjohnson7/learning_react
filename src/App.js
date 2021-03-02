@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Radium, { StyleRoot } from 'radium';
 import './Person/Person.css';
 import './UserInput/UserInput.css';
 import './CharComponent/CharComponent.css';
@@ -121,12 +122,19 @@ class App extends Component {
 
 	// inline css styling: scoped rather than global
     const style = {
-	  backgroundColor: 'white',
-	  font: 'inherit',
+	  backgroundColor: 'green',
+	  color: 'white',
 	  border: '1px solid blue',
 	  padding: '8px',
 	  cursor: 'pointer'
     }
+
+	const button_style = {
+		':hover': {
+			backgroundColor: 'lightgreen',
+			color: 'black'
+		}
+	}
 
 	const usernameBlock = {
 		backgroundColor: '#ccc',
@@ -170,6 +178,13 @@ class App extends Component {
 			})}
 			</div>
 		);
+		// dynamic inline styling
+		style.backgroundColor = 'red';
+
+		button_style[':hover'] = {
+			backgroundColor: 'lightblue',
+			color: 'black'
+		}
 	}
 
 	let chars = null;
@@ -189,6 +204,15 @@ class App extends Component {
 		)
 	}
 
+	const classes = [];
+
+	if (this.state.persons.length <= 2){
+		classes.push('red');
+	}
+	if (this.state.persons.length <= 1){
+		classes.push('bold');
+	}
+
     return (
 	  // JSX
 
@@ -197,8 +221,10 @@ class App extends Component {
 	  // bind syntax is the most common
 	  	// if multiple arguments, pass each of them in.
 	 // single line function syntax (line 81) may take longer. In this case, single line => implies 'return' and the switchNameHandler needs parentheses
-      <div className="App">
+	 <StyleRoot>
+	  <div className="App">
         <h1>Hi, I'm a React app</h1>
+		<p className={classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
 		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charles PW', 'Lamy Lorn', 'Forte-san')}>Switch Name</button>
 
 		<button style={style}
@@ -216,7 +242,7 @@ class App extends Component {
 
 		{ AnnaDiv }
 
-		<button style={style} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+		<button style={button_style} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
 
 		{ persons }
 
@@ -245,6 +271,7 @@ class App extends Component {
 		</div>
 
       </div>
+	  </StyleRoot>
     );
 
 	// createElement(html tag, css, nested components)
@@ -253,4 +280,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Radium(App);
