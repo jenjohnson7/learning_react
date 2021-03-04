@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Radium, { StyleRoot } from 'radium';
+import styled from 'styled-components';
 import './Person/Person.css';
 import './UserInput/UserInput.css';
 import './CharComponent/CharComponent.css';
@@ -9,6 +9,19 @@ import UserOutput from './UserOutput/UserOutput.js';
 import UserInput from './UserInput/UserInput.js';
 import ValidationComponent from './ValidationComponent/ValidationComponent.js';
 import CharComponent from './CharComponent/CharComponent.js';
+
+const StyledButton = styled.button`
+	background-color: ${props => props.alt ? 'red': 'green'};
+	color: white;
+	border: 1px solid blue;
+	padding: 8px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: lightgreen;
+		color: black;
+	}
+`;
 
 class App extends Component {
   // state property is only for class-based components (components that extend other components)
@@ -129,12 +142,6 @@ class App extends Component {
 	  cursor: 'pointer'
     }
 
-	const button_style = {
-		':hover': {
-			backgroundColor: 'lightgreen',
-			color: 'black'
-		}
-	}
 
 	const usernameBlock = {
 		backgroundColor: '#ccc',
@@ -179,12 +186,6 @@ class App extends Component {
 			</div>
 		);
 		// dynamic inline styling
-		style.backgroundColor = 'red';
-
-		button_style[':hover'] = {
-			backgroundColor: 'lightblue',
-			color: 'black'
-		}
 	}
 
 	let chars = null;
@@ -221,7 +222,6 @@ class App extends Component {
 	  // bind syntax is the most common
 	  	// if multiple arguments, pass each of them in.
 	 // single line function syntax (line 81) may take longer. In this case, single line => implies 'return' and the switchNameHandler needs parentheses
-	 <StyleRoot>
 	  <div className="App">
         <h1>Hi, I'm a React app</h1>
 		<p className={classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
@@ -242,7 +242,7 @@ class App extends Component {
 
 		{ AnnaDiv }
 
-		<button style={button_style} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+		<StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</StyledButton>
 
 		{ persons }
 
@@ -271,7 +271,6 @@ class App extends Component {
 		</div>
 
       </div>
-	  </StyleRoot>
     );
 
 	// createElement(html tag, css, nested components)
@@ -280,4 +279,4 @@ class App extends Component {
   }
 }
 
-export default Radium(App);
+export default App;
