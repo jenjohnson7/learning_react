@@ -1,12 +1,15 @@
 // ES6 syntax
 
 import React from 'react';
-import styled from 'styled-components'
 import classes from './Person.css';
 
 const person = (props) => {
 	// props arguments can be both values and functions (click=switchNameHandler function in App.js)
 	// children are elements between the opening and closing tags
+	const rnd = Math.random();
+	if (rnd > 0.7){
+		throw new Error('Something went wrong');
+	}
 
 	return (
 		// <div className="Person" style={style}>
