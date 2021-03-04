@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import './Person/Person.css';
 import './UserInput/UserInput.css';
 import './CharComponent/CharComponent.css';
@@ -128,6 +128,7 @@ class App extends Component {
 	  cursor: 'pointer'
     }
 
+	let buttonClass = '';
 
 	const usernameBlock = {
 		backgroundColor: '#ccc',
@@ -172,6 +173,7 @@ class App extends Component {
 			</div>
 		);
 		// dynamic inline styling
+		buttonClass = classes.Red;
 	}
 
 	let chars = null;
@@ -191,13 +193,13 @@ class App extends Component {
 		)
 	}
 
-	const classes = [];
+	const assigned_classes = [];
 
 	if (this.state.persons.length <= 2){
-		classes.push('red');
+		assigned_classes.push(classes.red);
 	}
 	if (this.state.persons.length <= 1){
-		classes.push('bold');
+		assigned_classes.push(classes.bold);
 	}
 
     return (
@@ -208,9 +210,9 @@ class App extends Component {
 	  // bind syntax is the most common
 	  	// if multiple arguments, pass each of them in.
 	 // single line function syntax (line 81) may take longer. In this case, single line => implies 'return' and the switchNameHandler needs parentheses
-	  <div className="App">
+	  <div className={classes.App}>
         <h1>Hi, I'm a React app</h1>
-		<p className={classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
+		<p className={assigned_classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
 		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charles PW', 'Lamy Lorn', 'Forte-san')}>Switch Name</button>
 
 		<button style={style}
@@ -228,7 +230,7 @@ class App extends Component {
 
 		{ AnnaDiv }
 
-		<button className='button' onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+		<button className={buttonClass} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
 
 		{ persons }
 
