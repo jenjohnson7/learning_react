@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import styled from 'styled-components';
 import './Person/Person.css';
 import './UserInput/UserInput.css';
 import './CharComponent/CharComponent.css';
@@ -9,19 +8,6 @@ import UserOutput from './UserOutput/UserOutput.js';
 import UserInput from './UserInput/UserInput.js';
 import ValidationComponent from './ValidationComponent/ValidationComponent.js';
 import CharComponent from './CharComponent/CharComponent.js';
-
-const StyledButton = styled.button`
-	background-color: ${props => props.alt ? 'red': 'green'};
-	color: white;
-	border: 1px solid blue;
-	padding: 8px;
-	cursor: pointer;
-
-	&:hover {
-		background-color: lightgreen;
-		color: black;
-	}
-`;
 
 class App extends Component {
   // state property is only for class-based components (components that extend other components)
@@ -242,7 +228,7 @@ class App extends Component {
 
 		{ AnnaDiv }
 
-		<StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</StyledButton>
+		<button className='button' onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
 
 		{ persons }
 
