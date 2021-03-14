@@ -14,22 +14,35 @@ const cockpit = (props) => {
 
 	useEffect(() => {
 		console.log('[cockpit.js] useEffect onload: pass an empty array to only show on first render/on load/componentDidMount ');
-		setTimeout(() =>{
+		// arg 1: the 'main' useEffect function
+		const timer = setTimeout(() =>{
 			alert('[cockpit.js] useEffect onload');
 		}, 1000);
+		// the 'cleanup'/return function of the useEffect function is run only when the cockpit component is removed (arg2 = [])
+		// therefore, if you 'Remove Cockpit' before 1000 ms, you will not see the alert
+		// however, if you don't 'Remove Cockpit' before 1000 ms, you will see the alert because the 'cleanup'/return function will not clear the timer
+		return () => {
+			clearTimeout(timer);
+			console.log('[cockpit.js] useEffect #3 cleanup');
+		}
 	}, []);
 
 	useEffect(() => {
+		// arg 1: the 'main' useEffect function
 		console.log('[cockpit.js] useEffect #3');
-		const timer = setTimeout(() =>{
+		setTimeout(() =>{
 			alert('[cockpit.js] useEffect #3');
 		}, 1000);
-		// extra return statement runs before the main useEffect function but before the (first) render cycle. can be used for any useEffect, not just useEffect with empty []
+		// the return statment of the 'main' useEffect function can be used for cleanup (or other purposes)
 		return () => {
-			clearTimeout(timer); // even though cockpit component has been removed -> should see cleanup,
-			console.log('[cockpit.js] useEffect cleanup');
+			// this return statement is another function that is run
+			// after (every) render cycle (or whatever is triggered by arg 2)
+			// before the 'main' useEffect function
+			console.log('[cockpit.js] useEffect #3 cleanup');
 		}
-	}, []);
+		// because arg 3 = None, this function runs for all changes to state
+		// if this was added to the second useEffect (where arg3 = []), the cleanup would only be called when the component is removed from the DOM, more exactly matching the functionality componentWillUnmount)
+	});
 
 	const assigned_classes = [];
 
