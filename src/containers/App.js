@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import './Person/Person.css';
-import './UserInput/UserInput.css';
-import './CharComponent/CharComponent.css';
-import Person from './Person/Person.js';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary.js';
-import UserOutput from './UserOutput/UserOutput.js';
-import UserInput from './UserInput/UserInput.js';
-import ValidationComponent from './ValidationComponent/ValidationComponent.js';
-import CharComponent from './CharComponent/CharComponent.js';
+import '../components/Persons/Person/Person.css';
+import '../components/UserInput/UserInput.css';
+import '../components/CharComponent/CharComponent.css';
+import Person from '../components/Persons/Person/Person.js';
+import Persons from '../components/Persons/Persons.js';
+import Cockpit from '../components/Cockpit/Cockpit.js';
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary.js';
+import UserOutput from '../components/UserOutput/UserOutput.js';
+import UserInput from '../components/UserInput/UserInput.js';
+import ValidationComponent from '../components/ValidationComponent/ValidationComponent.js';
+import CharComponent from '../components/CharComponent/CharComponent.js';
 
 class App extends Component {
   // state property is only for class-based components (components that extend other components)
@@ -129,8 +131,6 @@ class App extends Component {
 	  cursor: 'pointer'
     }
 
-	let buttonClass = '';
-
 	const usernameBlock = {
 		backgroundColor: '#ccc',
 		opacity: '100%',
@@ -156,24 +156,15 @@ class App extends Component {
 	let persons = null;
 
 	if (this.state.showPersons){
-		// rendering each object in a list dynamically
-		// 'map' converts each elt in array to something else using a function
-		// use index feature of 'map' and pass it to the handler to distinguish which person to remove
-		// use key = unique identifier to increase efficiency of rerendering
 		persons = (
 			<div>
-			{this.state.persons.map((person, index) => {
-				return <Person key={person.id}
-					click={() => this.deletePersonHandler(index)}
-					name={person.name}
-					age={person.age}
-					changed={(event) => this.nameChangedHander(event, person.id)}
-				/>
-			})}
+			<Persons
+			persons={this.state.persons}
+			clicked={this.deletePersonHandler}
+			changed={this.nameChangedHander}>
+			</Persons>
 			</div>
 		);
-		// dynamic inline styling
-		buttonClass = classes.Red;
 	}
 
 	let chars = null;
@@ -193,15 +184,6 @@ class App extends Component {
 		)
 	}
 
-	const assigned_classes = [];
-
-	if (this.state.persons.length <= 2){
-		assigned_classes.push(classes.red);
-	}
-	if (this.state.persons.length <= 1){
-		assigned_classes.push(classes.bold);
-	}
-
     return (
 	  // JSX
 
@@ -211,8 +193,7 @@ class App extends Component {
 	  	// if multiple arguments, pass each of them in.
 	 // single line function syntax (line 81) may take longer. In this case, single line => implies 'return' and the switchNameHandler needs parentheses
 	  <div className={classes.App}>
-        <h1>Hi, I'm a React app</h1>
-		<p className={assigned_classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
+
 		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charles PW', 'Lamy Lorn', 'Forte-san')}>Switch Name</button>
 
 		<button style={style}
@@ -230,7 +211,9 @@ class App extends Component {
 
 		{ AnnaDiv }
 
-		<button className={buttonClass} onClick={this.togglePersonsHandler.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+		<Cockpit
+		showPersons={this.state.showPerons} persons={this.state.persons}
+		clicked={this.togglePersonsHandler}/>
 
 		{ persons }
 
