@@ -21,7 +21,7 @@ const cockpit = (props) => {
 
 	return (
 		<div className={classes.Cockpit}>
-			<h1>Hi, I'm a React app</h1>
+			<h1>{props.title}</h1>
 			<p className={assigned_classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
 			<button className={buttonClass} onClick={props.clicked.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
 		</div>
