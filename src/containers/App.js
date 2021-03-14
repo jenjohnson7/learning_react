@@ -13,6 +13,11 @@ import ValidationComponent from '../components/ValidationComponent/ValidationCom
 import CharComponent from '../components/CharComponent/CharComponent.js';
 
 class App extends Component {
+
+	constructor(props){
+		super(props);
+		console.log('[App.js] constructor');
+	}
   // state property is only for class-based components (components that extend other components)
   // ages are integers here
   // if state changes, the component will be rerendered
@@ -35,6 +40,24 @@ class App extends Component {
 	  goal_char_count : 4,
 	  typed_string: "",
   }
+
+	static getDerivedStateFromProps(props, state){
+		console.log('[App.js] getDerivedStateFromProps', props);
+		return state;
+	}
+
+	componentDidMount(){
+		console.log('[App.js] componentDidMount');
+	}
+
+	shouldComponentUpdate(nextProps, nextState){
+		console.log('[App.js] shouldComponentUpdate');
+		return true;
+	}
+
+	componentDidUpdate(prevProps, prevState){
+		console.log('[App.js] componentDidUpdate');
+	}
 
   switchNameHandler = (newName, newName2, newName3, newName4) => {
 	  // merges data. Even if no changes to Amy, still need to include her since she will otherwise be detected as deleted from the state, and persons[2] in line 79 will throw an error
@@ -121,7 +144,7 @@ class App extends Component {
 	  this.setState({typed_string:new_string});
   }
   render() {
-
+	  console.log('[App.js] render');
 	// inline css styling: scoped rather than global
     const style = {
 	  backgroundColor: 'green',
@@ -212,6 +235,7 @@ class App extends Component {
 		{ AnnaDiv }
 
 		<Cockpit
+		title={this.props.appTitle}
 		showPersons={this.state.showPerons} persons={this.state.persons}
 		clicked={this.togglePersonsHandler}/>
 
