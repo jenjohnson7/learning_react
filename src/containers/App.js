@@ -39,6 +39,7 @@ class App extends Component {
 	  showPersons: false,
 	  goal_char_count : 4,
 	  typed_string: "",
+	  showCockpit: true,
   }
 
 	static getDerivedStateFromProps(props, state){
@@ -234,10 +235,16 @@ class App extends Component {
 
 		{ AnnaDiv }
 
+		<button
+		onClick={() => {
+			this.setState({showCockpit: false});
+		}}>Remove Cockpit</button>
+		{this.state.showCockpit ?
 		<Cockpit
 		title={this.props.appTitle}
 		showPersons={this.state.showPerons} persons={this.state.persons}
 		clicked={this.togglePersonsHandler}/>
+		: null}
 
 		{ persons }
 

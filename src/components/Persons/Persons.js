@@ -18,6 +18,11 @@ class Persons extends Component {
 		console.log('[Persons.js] componentDidUpdate');
 	}
 
+	// for cleaning up
+	componentWillUnmount(){
+		console.log('[Persons.js] componentDidUnmount');
+	}
+
 	render() {
 		console.log('[Persons.js] rendering');
 		return(
