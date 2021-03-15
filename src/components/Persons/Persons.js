@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Person from './Person/Person.js';
 
-class Persons extends Component {
+class Persons extends PureComponent {
 
-	shouldComponentUpdate(nextProps, nextState){
+	// shouldComponentUpdate(nextProps, nextState){
 		// optimize: if only cockpit is changed in App.js, no need to rerender this too
 
 		// if (nextProps.persons !== this.props.persons){
@@ -14,8 +14,12 @@ class Persons extends Component {
 		// }
 
 		// one liner - shallow comparison works because we made a copy of the persons array, so persons isn't just a pointer to the array in memory
-		return nextProps.persons !== this.props.persons
-	}
+		// return nextProps.persons !== this.props.persons
+
+		// the props of Persons are this.props.persons, this.props.changed, and this.props.clicked (the 2 functions passed to the component in the render function)
+	// }
+
+	// when a component should look at all it's props, switch it to a PureComponent instead of using shouldComponentUpdate
 
 	getSnapshotBeforeUpdate(prevProps, prevState){
 		console.log('[Persons.js] getSnapshotBeforeUpdate');
