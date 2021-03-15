@@ -4,8 +4,17 @@ import Person from './Person/Person.js';
 class Persons extends Component {
 
 	shouldComponentUpdate(nextProps, nextState){
-		console.log('[Persons.js] shouldComponentUpdate');
-		return true; // usually some logic to compare old/current and new state
+		// optimize: if only cockpit is changed in App.js, no need to rerender this too
+
+		// if (nextProps.persons !== this.props.persons){
+			// console.log('[Persons.js] shouldComponentUpdate true');
+			// return true
+		// } else {
+			// return false
+		// }
+
+		// one liner - shallow comparison works because we made a copy of the persons array, so persons isn't just a pointer to the array in memory
+		return nextProps.persons !== this.props.persons
 	}
 
 	getSnapshotBeforeUpdate(prevProps, prevState){
