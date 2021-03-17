@@ -11,6 +11,7 @@ import UserOutput from '../components/UserOutput/UserOutput.js';
 import UserInput from '../components/UserInput/UserInput.js';
 import ValidationComponent from '../components/ValidationComponent/ValidationComponent.js';
 import CharComponent from '../components/CharComponent/CharComponent.js';
+import WithClass from '../hoc/WithClass.js'
 
 class App extends Component {
 
@@ -216,7 +217,7 @@ class App extends Component {
 	  // bind syntax is the most common
 	  	// if multiple arguments, pass each of them in.
 	 // single line function syntax (line 81) may take longer. In this case, single line => implies 'return' and the switchNameHandler needs parentheses
-	  <div className={classes.App}>
+	  <WithClass classes={classes.App}>
 
 		<button style={style} onClick={this.switchNameHandler.bind(this, 'Julia Claire', 'Charles PW', 'Lamy Lorn', 'Forte-san')}>Switch Name</button>
 
@@ -273,7 +274,7 @@ class App extends Component {
 		{ chars }
 		</div>
 
-      </div>
+      </WithClass>
     );
 
 	// createElement(html tag, css, nested components)
