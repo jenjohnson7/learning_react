@@ -1,7 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classes from './Cockpit.css';
 
 const cockpit = (props) => {
+
+	const toggleButtonRef = useRef(null);
+
+	useEffect(() => {
+		toggleButtonRef.current.click();
+		return () => {
+			console.log("on load, toggle button to show people");
+		};
+	}, []);
 
 	// react hook equivalent for functional components
 	useEffect(() => {
@@ -64,7 +73,7 @@ const cockpit = (props) => {
 		<div className={classes.Cockpit}>
 			<h1>{props.title}</h1>
 			<p className={assigned_classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
-			<button className={buttonClass} onClick={props.clicked.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+			<button ref={toggleButtonRef} className={buttonClass} onClick={props.clicked.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
 		</div>
 	);
 }
