@@ -1,9 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import classes from './Cockpit.css';
+import AuthContext from '../../context/auth-context.js';
 
 const cockpit = (props) => {
 
 	const toggleButtonRef = useRef(null);
+	const authContext = useContext(AuthContext);
+
+	console.log("authenticated in cockpit.js " + authContext.authenticated);
 
 	useEffect(() => {
 		toggleButtonRef.current.click();
@@ -74,6 +78,7 @@ const cockpit = (props) => {
 			<h1>{props.title}</h1>
 			<p className={assigned_classes.join(' ')}>This is dynamically styled by class depending on how many people there are.</p>
 			<button ref={toggleButtonRef} className={buttonClass} onClick={props.clicked.bind(this, 'everyone')}>Show/Hide Everyone Else</button>
+			<button onClick={authContext.login}>Log in</button>
 		</div>
 	);
 }

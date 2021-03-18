@@ -13,6 +13,7 @@ import ValidationComponent from '../components/ValidationComponent/ValidationCom
 import CharComponent from '../components/CharComponent/CharComponent.js';
 import Aux from '../hoc/Aux.js';
 import withClass from '../hoc/WithClass.js';
+import AuthContext from '../context/auth-context.js';
 
 class App extends Component {
 
@@ -43,6 +44,7 @@ class App extends Component {
 	  typed_string: "",
 	  showCockpit: true,
 	  changeCounter: 0,
+	  authenticated: false,
   }
 
 	static getDerivedStateFromProps(props, state){
@@ -139,6 +141,10 @@ class App extends Component {
 	};
   }
 
+  loginHandler = () => {
+	  this.setState({authenticated: true})
+  };
+
   typedStringHandler = (event) => {
 	  this.setState({typed_string: event.target.value});
   }
@@ -193,7 +199,8 @@ class App extends Component {
 			<Persons
 			persons={this.state.persons}
 			clicked={this.deletePersonHandler}
-			changed={this.nameChangedHander}>
+			isAuthenticated={this.state.authenticated}
+			changed={this.nameChangedHandler}>
 			</Persons>
 			</div>
 		);
@@ -247,6 +254,12 @@ class App extends Component {
 		onClick={() => {
 			this.setState({showCockpit: false});
 		}}>Remove Cockpit</button>
+		<AuthContext.Provider
+		value={
+			{authenticated: this.state.authenticated,
+				login: this.loginHandler
+			}
+		}>
 		{this.state.showCockpit ?
 		<Cockpit
 		title={this.props.appTitle}
@@ -256,6 +269,7 @@ class App extends Component {
 		: null}
 
 		{ persons }
+		</AuthContext.Provider>
 
 		<div style={usernameBlock}>
 		<UserOutput username={this.state.usernames[0].username} />
